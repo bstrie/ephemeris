@@ -1,0 +1,5 @@
+ajax/venv
+*.pyc
+*.log
+*.txt
+*.sh
