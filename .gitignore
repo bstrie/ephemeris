@@ -3,3 +3,4 @@ ajax/venv
 *.log
 *.txt
 *.sh
+*.swp
