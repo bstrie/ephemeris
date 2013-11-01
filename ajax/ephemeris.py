@@ -14,6 +14,7 @@ app.logger.addHandler(file_handler)
 
 @app.route('/ephemeris/ajax/coordinates')
 def coordinates():
+    # The date parameter looks like "2013-10-31T22:39:08.315Z" (ISO 8601).
     date_param = request.args.get('date', '')
     today = dateutil.parser.parse(date_param)
     yesterday = today - timedelta(days=1)
@@ -29,9 +30,9 @@ def scrape_data_for_date(date):
             'inday': date.day,
             'inmonth': date.month,
             'inyear': date.year,
-            'inhours': '00',
-            'inmins': '00',
-            'insecs': '00',
+            'inhours': date.hour,
+            'inmins': date.minute,
+            'insecs': date.second,
             'insort': 'type',
             'z': '0',  # "0" indicates a zodiac of "Sidereal - Fagan/Bradley"
             'gh': 'g',
