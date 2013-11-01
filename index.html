@@ -2,22 +2,10 @@
 <html>
 <head>
 <meta charset='utf-8'>
+<link rel="stylesheet" href="ephemeris.css">
 <script src='jquery-2.0.3.min.js'></script>
 <script src='moment.min.js'></script>
-<style>
-body {
-  font-family: "Calisto MT", "Bookman Old Style", Bookman, "Goudy Old Style", Garamond, "Hoefler Text", "Bitstream Charter", Georgia, serif;
-}
-td {
-  text-align: right;
-}
-.changed {
-  color: red;
-}
-.sign {
-  text-align: center;
-}
-</style>
+<script src='milky.js'></script>
 <script>
 $(document).ready(function() {
   tonight_local_time = moment().hour(22).minute(0).second(0);
@@ -46,7 +34,10 @@ $(document).ready(function() {
 </script>
 </head>
 <body>
-  <div id="title"></div>
-  <div id="data"></div>
+  <div id="content">
+    <div id="title"></div>
+    <div id="data"></div>
+  </div>
+  <canvas id="galaxy" class="hidden"></canvas>
 </body>
 </html>

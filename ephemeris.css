@@ -1,0 +1,51 @@
+body {
+  background-color: #18171C;
+  color: #FFFFFF;
+  /* http://cssfontstack.com/ */
+  font-family: "Calisto MT", "Bookman Old Style", Bookman, "Goudy Old Style", Garamond, "Hoefler Text", "Bitstream Charter", Georgia, serif;
+}
+
+table tr {
+  opacity: 0.35;
+  text-align: right;
+}
+
+.changed {
+  opacity: 1;
+}
+
+.sign {
+  text-align: center;
+}
+
+#galaxy {
+  transition: opacity 10s linear;
+  -webkit-transition: opacity 10s linear; /* dammit webkit */
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+/* By removing this class we can trigger a CSS transition */
+.hidden {
+  opacity: 0;
+}
+
+#content {
+  font-size: x-large;
+  line-height: 1.4em;
+  width: 100%;
+  text-align: center;
+}
+
+#title {
+  margin-top: 75px;
+}
+
+#data table {
+  margin-top: 20px;
+  width: 1px;
+  margin-left: auto;
+  margin-right: auto;
+}
