@@ -1,7 +1,10 @@
+# -*- coding: utf-8 -*-
+
 import dateutil.parser
 import logging
 import requests
 import time
+
 from bs4 import BeautifulSoup
 from datetime import timedelta
 from flask import Flask, jsonify, request
@@ -12,15 +15,23 @@ file_handler = FileHandler('/web/www/ephemeris/ajax/server.log')
 file_handler.setLevel(logging.ERROR)
 app.logger.addHandler(file_handler)
 
-@app.route('/ephemeris/ajax/coordinates')
-def coordinates():
+@app.route('/ephemeris/ajax/positions')
+def positions():
     # The date parameter looks like "2013-10-31T22:39:08.315Z" (ISO 8601).
     date_param = request.args.get('date', '')
+
     today = dateutil.parser.parse(date_param)
     yesterday = today - timedelta(days=1)
+
     today_data = scrape_data_for_date(today)
     yesterday_data = scrape_data_for_date(yesterday)
-    return jsonify(today=today_data, yesterday=yesterday_data)
+
+    for planet_today, planet_yesterday in zip(today_data, yesterday_data):
+        planet_today['has_changed_since_yesterday'] = True
+        if planet_today['sign'] == planet_yesterday['sign'] and planet_today['degrees'] == planet_yesterday['degrees']:
+           planet_today['has_changed_since_yesterday'] = False
+
+    return jsonify(today=today_data)
 
 def scrape_data_for_date(date):
     # http://serennu.com/astrology/ephemeris.php?inday=01&inmonth=11&inyear=2013&inhours=00&inmins=00&insecs=00&insort=type&z=0&gh=g&addobj=&inla=&inlo=&h=P
@@ -69,19 +80,35 @@ def massage_data(planet_data):
     result = []
     for planet in planet_data[:10]:
         name = planet['Name'].strip()
-        retrograde = True if planet['Rx'] == 'Rx' else False
+        if name == 'Pluto-Charon': name = 'Pluto'
+        is_retrograde = True if planet['Rx'] == 'Rx' else False
         split_position = planet['Position'].split()
         degrees = int(split_position[0])
-        sign = split_position[1]
+        sign = get_zodiac_symbol(split_position[1])
         minutes = int(split_position[2].split("'")[0])  # Cut off the trailing apostrophe
         if minutes >= 30:
             degrees += 1
 
         result.append({'name': name,
-                       'retrograde': retrograde,
+                       'is_retrograde': is_retrograde,
                        'sign': sign,
                        'degrees': degrees})
     return result
+
+def get_zodiac_symbol(abbrev):
+    zodiac = {'ar': '♈',
+              'ta': '♉',
+              'ge': '♊',
+              'cn': '♋',
+              'le': '♌',
+              'vi': '♍',
+              'li': '♎',
+              'sc': '♏',
+              'sa': '♐',
+              'cp': '♑',
+              'aq': '♒',
+              'pi': '♓'}
+    return zodiac[abbrev]
 
 if __name__ == '__main__':
     app.run(port=7901)

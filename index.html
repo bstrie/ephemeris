@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='utf-8'>
+<script src='jquery-2.0.3.min.js'></script>
+<script src='moment.min.js'></script>
+<style>
+body {
+  font-family: "Calisto MT", "Bookman Old Style", Bookman, "Goudy Old Style", Garamond, "Hoefler Text", "Bitstream Charter", Georgia, serif;
+}
+td {
+  text-align: right;
+}
+.changed {
+  color: red;
+}
+.sign {
+  text-align: center;
+}
+</style>
+<script>
+$(document).ready(function() {
+  tonight_local_time = moment().hour(22).minute(0).second(0);
+  tonight_utc = tonight_local_time.clone().utc();
+
+  var title = tonight_local_time.format('dddd, MMM D, hh:mm A') +
+              ' local time (UTC' + tonight_local_time.format('Z') + ')';
+
+  $('div#title').text(title);
+  $('div#data').text('Loading...');
+
+  $.get('ajax/positions', {date: tonight_utc.toISOString()}, function(positions) {
+    var table_html = '<table>';
+    $.each(positions.today, function(i) {
+      var planet = positions.today[i];
+      table_html += '<tr' + (planet.has_changed_since_yesterday ? ' class="changed"' : '') + '>' +
+                    '<td>' + planet.name + '</td>' +
+                    '<td>' + planet.degrees + '</td>' +
+                    '<td class="sign">' + planet.sign + '</td>' +
+                    '<td>' + (planet.is_retrograde ? 'Rx' : '') + '</td>' +
+                    '</tr>';
+      $('div#data').html(table_html);
+    });
+  });
+});
+</script>
+</head>
+<body>
+  <div id="title"></div>
+  <div id="data"></div>
+</body>
+</html>
