@@ -18,6 +18,11 @@ table tr {
   text-align: right;
 }
 
+table td {
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
 .changed {
   opacity: 1;
 }
