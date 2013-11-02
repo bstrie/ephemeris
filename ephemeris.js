@@ -52,12 +52,13 @@ onload = function() {
             setTimeout(function() {
                 spinner.stop();
                 document.getElementById('content').className = '';
+                setTimeout(function() {
+                  draw_galaxy();
+                }, 500);
             }, 500);
         }
     };
 
     ajax.open('GET', 'ajax/positions?date=' + tonight_utc.toISOString(), true);
     ajax.send();
-
-    draw_galaxy();
 };

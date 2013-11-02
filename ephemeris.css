@@ -36,8 +36,8 @@ table td {
 }
 
 #galaxy {
-  transition: opacity 20s linear;
-  -webkit-transition: opacity 20s linear; /* dammit webkit */
+  transition: opacity 15s linear;
+  -webkit-transition: opacity 15s linear; /* dammit webkit */
   position: fixed;
   top: 0;
   left: 0;
