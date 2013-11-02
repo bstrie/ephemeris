@@ -6,7 +6,11 @@ body {
 }
 
 ::selection {
-  background-color: #fe57a1;
+  background: #fe57a1;
+}
+
+::-moz-selection {  /* dammit mozilla */
+  background: #fe57a1;
 }
 
 html {
@@ -32,8 +36,8 @@ table td {
 }
 
 #galaxy {
-  transition: opacity 10s linear;
-  -webkit-transition: opacity 10s linear; /* dammit webkit */
+  transition: opacity 20s linear;
+  -webkit-transition: opacity 20s linear; /* dammit webkit */
   position: fixed;
   top: 0;
   left: 0;
@@ -43,6 +47,16 @@ table td {
 /* By removing this class we can trigger a CSS transition */
 .hidden {
   opacity: 0;
+}
+
+#content, #spinner {
+  transition: opacity 1s linear;
+  -webkit-transition: opacity 1s linear; /* dammit webkit */
+}
+
+#spinner {
+  width: 100%;
+  height: 100%;
 }
 
 #content {
