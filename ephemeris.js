@@ -14,7 +14,7 @@ $(document).ready(function() {
         hwaccel: true, // Whether to use hardware acceleration
         className: 'spinner', // The CSS class to assign to the spinner
         zIndex: 2e9, // The z-index (defaults to 2000000000)
-        top: '230px', // Top position relative to parent in px
+        top: '200px', // Top position relative to parent in px
         left: 'auto' // Left position relative to parent in px
     };
     var target = document.getElementById('spinner');
@@ -23,7 +23,7 @@ $(document).ready(function() {
     tonight_local_time = moment().hour(22).minute(0).second(0);
     tonight_utc = tonight_local_time.clone().utc();
 
-    var title = tonight_local_time.format('dddd, MMM D, hh:mm A') +
+    var info = tonight_local_time.format('dddd, MMM D, hh:mm A') +
                 ' local time (UTC' + tonight_local_time.format('Z') + ')';
 
     $.get('ajax/positions', {date: tonight_utc.toISOString()}, function(positions) {
@@ -36,15 +36,16 @@ $(document).ready(function() {
                           '<td class="sign">' + planet.sign + '</td>' +
                           '<td>' + (planet.is_retrograde ? 'Rx' : '') + '</td>' +
                           '</tr>';
-
-            $('div#spinner').addClass('hidden');
-            setTimeout(function() {
-                spinner.stop();
-            }, 1000);
-
-            $('div#title').text(title);
-            $('div#data').html(table_html);
-            $('div#content').removeClass('hidden');
         });
+        table_html += '</table>';
+
+        $('div#data').html(table_html);
+        $('div#info').text(info);
+
+        $('div#spinner').addClass('hidden');
+        setTimeout(function() {
+            spinner.stop();
+            $('div#content').removeClass('hidden');
+        }, 500);
     });
 });

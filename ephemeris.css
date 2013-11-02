@@ -50,13 +50,16 @@ table td {
 }
 
 #content, #spinner {
-  transition: opacity 1s linear;
-  -webkit-transition: opacity 1s linear; /* dammit webkit */
+  transition: opacity 0.5s linear;
+  -webkit-transition: opacity 0.5s linear; /* dammit webkit */
 }
 
 #spinner {
   width: 100%;
   height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
 #content {
@@ -66,7 +69,7 @@ table td {
   text-align: center;
 }
 
-#title {
+#info {
   margin-top: 25px;
   font-size: medium;
 }
