@@ -35,7 +35,7 @@ function rand_normal(stdev, mean) {
   return sum;
 }
 
-function canvas() {
+function draw_galaxy() {
   var canvas = document.getElementById('galaxy');
   canvas.width = CANVAS_WIDTH;
   canvas.height = CANVAS_HEIGHT;
@@ -78,5 +78,3 @@ function canvas() {
         canvas.className = '';
   }, 1000);
 }
-
-onload = canvas;
