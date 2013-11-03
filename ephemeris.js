@@ -1,3 +1,4 @@
+// Configuration options for the progress spinner
 var opts = {
     lines: 13, // The number of lines to draw
     length: 0, // The length of each line
@@ -18,6 +19,7 @@ var opts = {
 };
 var spinner = new Spinner(opts);
 
+// Get the current day, then set the time to sometime tonight
 var tonight_local_time = moment().hour(22).minute(0).second(0);
 var tonight_utc = tonight_local_time.clone().utc();
 
@@ -48,10 +50,14 @@ onload = function() {
             document.getElementById('data').innerHTML = table_html;
             document.getElementById('info').innerHTML = info;
 
+            // Trigger the CSS transition to hide the spinner...
             spinner_element.className = 'hidden';
+            // ...then stop the spinner once it's done
             setTimeout(function() {
                 spinner.stop();
+                // Trigger the CSS transition to show the data...
                 document.getElementById('content').className = '';
+                // ...then start drawing the galaxy once it's done
                 setTimeout(function() {
                   draw_galaxy();
                 }, 500);
