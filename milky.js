@@ -1,7 +1,6 @@
 var CANVAS_WIDTH = window.innerWidth;
 var CANVAS_HEIGHT = window.innerHeight;
 
-
 function draw_galaxy() {
     var canvas = document.getElementById('galaxy');
     canvas.width = CANVAS_WIDTH;
