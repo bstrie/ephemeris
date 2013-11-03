@@ -1,37 +1,38 @@
 # -*- coding: utf-8 -*-
 
+import bs4
 import dateutil.parser
+import datetime
+import flask
 import logging
 import requests
 import time
 
-from bs4 import BeautifulSoup
-from datetime import timedelta
-from flask import Flask, jsonify, request
-from logging import FileHandler
+app = flask.Flask(__name__)
 
-app = Flask(__name__)
-file_handler = FileHandler('/web/www/ephemeris/ajax/server.log')
+# Tail this file to observe runtime errors
+file_handler = logging.FileHandler('/web/www/ephemeris/ajax/server.log')
 file_handler.setLevel(logging.ERROR)
 app.logger.addHandler(file_handler)
 
 @app.route('/ephemeris/ajax/positions')
 def positions():
-    # The date parameter looks like "2013-10-31T22:39:08.315Z" (ISO 8601).
-    date_param = request.args.get('date', '')
+    # The date parameter looks like "2013-11-04T03:00:00.866Z" (ISO 8601).
+    date_param = flask.request.args.get('date', '')
 
     today = dateutil.parser.parse(date_param)
-    yesterday = today - timedelta(days=1)
+    yesterday = today - datetime.timedelta(days=1)
 
     today_data = scrape_data_for_date(today)
     yesterday_data = scrape_data_for_date(yesterday)
 
     for planet_today, planet_yesterday in zip(today_data, yesterday_data):
         planet_today['has_changed_since_yesterday'] = True
-        if planet_today['sign'] == planet_yesterday['sign'] and planet_today['degrees'] == planet_yesterday['degrees']:
+        if planet_today['sign'] == planet_yesterday['sign'] \
+           and planet_today['degrees'] == planet_yesterday['degrees']:
            planet_today['has_changed_since_yesterday'] = False
 
-    return jsonify(today=today_data)
+    return flask.jsonify(today=today_data)
 
 def scrape_data_for_date(date):
     # http://serennu.com/astrology/ephemeris.php?inday=01&inmonth=11&inyear=2013&inhours=00&inmins=00&insecs=00&insort=type&z=0&gh=g&addobj=&inla=&inlo=&h=P
@@ -53,7 +54,7 @@ def scrape_data_for_date(date):
             'h': 'P'
         })
     html = response.text
-    soup = BeautifulSoup(html)
+    soup = bs4.BeautifulSoup(html)
     table = soup.find('table')  # `.find()` finds only the first matching tag
     result = []
     columns = []
@@ -67,16 +68,16 @@ def scrape_data_for_date(date):
             result[-1][columns[idx]] = cell.string
 
     # Now we have all the data from the table in a nice format.
-    # But, we only care about the major solar system bodies,
+    # But, we have data for way more bodies than we care about.
     # We also have a lot more data for each body than we care about.
     # Basically, we just want the name, position, and retrograde status.
     # We also want to do some parsing on the position to make it friendlier.
-    # So rather than hardcoding all that into the previous step, we use a helper.
-    result = massage_data(result)
+    # Rather than hardcoding all that into the previous step, we use a helper.
+    result = munge_data(result)
 
     return result
 
-def massage_data(planet_data):
+def munge_data(planet_data):
     result = []
     for planet in planet_data[:10]:
         name = planet['Name'].strip()
@@ -109,6 +110,3 @@ def get_zodiac_symbol(abbrev):
               'aq': '♒',
               'pi': '♓'}
     return zodiac[abbrev]
-
-if __name__ == '__main__':
-    app.run(port=7901)
