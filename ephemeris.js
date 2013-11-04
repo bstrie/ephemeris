@@ -26,44 +26,43 @@ var tonight_utc = tonight_local_time.clone().utc();
 var info = tonight_local_time.format('dddd, MMM D, hh:mm A') +
            ' local time (UTC' + tonight_local_time.format('Z') + ')';
 
-onload = function() {
-    var spinner_element = document.getElementById('spinner');
-    spinner.spin(spinner_element);
+var ajax = new XMLHttpRequest();
 
-    var ajax = new XMLHttpRequest();
-
-    ajax.onreadystatechange = function() {
-        if (ajax.readyState == 4 && ajax.status == 200) {
-            var positions = JSON.parse(ajax.responseText);
-            var table_html = '<table>';
-            for (var i=0; i<positions.today.length; i++) {
-                var planet = positions.today[i];
-                table_html += '<tr' + (planet.has_changed_since_yesterday ? ' class="changed"' : '') + '>' +
-                              '<td>' + planet.name + '</td>' +
-                              '<td>' + planet.degrees + '</td>' +
-                              '<td class="sign">' + planet.sign + '</td>' +
-                              '<td>' + (planet.is_retrograde ? 'Rx' : '') + '</td>' +
-                              '</tr>';
-            }
-            table_html += '</table>';
-
-            document.getElementById('data').innerHTML = table_html;
-            document.getElementById('info').innerHTML = info;
-
-            // Trigger the CSS transition to hide the spinner...
-            spinner_element.className = 'hidden';
-            // ...then stop the spinner once it's done
-            setTimeout(function() {
-                spinner.stop();
-                // Trigger the CSS transition to show the data...
-                document.getElementById('content').className = '';
-                // ...then start drawing the galaxy once it's done
-                setTimeout(function() {
-                  draw_galaxy();
-                }, 500);
-            }, 500);
+ajax.onreadystatechange = function() {
+    if (ajax.readyState == 4 && ajax.status == 200) {
+        var positions = JSON.parse(ajax.responseText);
+        var table_html = '<table>';
+        for (var i=0; i<positions.today.length; i++) {
+            var planet = positions.today[i];
+            table_html += '<tr' + (planet.has_changed_since_yesterday ? ' class="changed"' : '') + '>' +
+                          '<td>' + planet.name + '</td>' +
+                          '<td>' + planet.degrees + '</td>' +
+                          '<td class="sign">' + planet.sign + '</td>' +
+                          '<td>' + (planet.is_retrograde ? 'Rx' : '') + '</td>' +
+                          '</tr>';
         }
-    };
+        table_html += '</table>';
+
+        document.getElementById('positions').innerHTML = table_html;
+        document.getElementById('info').innerHTML = info;
+
+        // Trigger the CSS transition to hide the spinner...
+        document.getElementById('spinner').className = 'hidden';
+        // ...then stop the spinner once it's done
+        setTimeout(function() {
+            spinner.stop();
+            // Trigger the CSS transition to show the data...
+            document.getElementById('content').className = '';
+            // ...then start drawing the galaxy once it's done
+            setTimeout(function() {
+              draw_galaxy();
+            }, 500);
+        }, 500);
+    }
+};
+
+onload = function() {
+    spinner.spin(document.getElementById('spinner'));
 
     ajax.open('GET', 'ajax/positions?date=' + tonight_utc.toISOString(), true);
     ajax.send();

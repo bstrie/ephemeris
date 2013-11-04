@@ -11,13 +11,13 @@ import time
 app = flask.Flask(__name__)
 
 # Tail this file to observe runtime errors
-file_handler = logging.FileHandler('/web/www/ephemeris/ajax/server.log')
+file_handler = logging.FileHandler('server.log')
 file_handler.setLevel(logging.ERROR)
 app.logger.addHandler(file_handler)
 
 @app.route('/ephemeris/ajax/positions')
 def positions():
-    # The date parameter looks like "2013-11-04T03:00:00.866Z" (ISO 8601).
+    # The date parameter looks like "2013-11-04T03:00:00.866Z" (ISO 8601)
     date_param = flask.request.args.get('date', '')
 
     today = dateutil.parser.parse(date_param)

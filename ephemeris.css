@@ -1,6 +1,6 @@
 body {
-  background-color: #18171C;
-  color: #FFFFFF;
+  background-color: #18171c;
+  color: #ffffff;
   /* http://cssfontstack.com/ */
   font-family: Baskerville, "Baskerville Old Face", "Hoefler Text", Garamond, "Times New Roman", serif;
 }
@@ -22,7 +22,7 @@ table {
 }
 
 /* Positions that haven't changed since yesterday are semitransparent */
-table tr {
+tr {
   opacity: 0.2;
   text-align: right;
 }
@@ -32,7 +32,7 @@ table tr {
 }
 
 /* Just some room to breathe */
-table td {
+td {
   padding-left: 2px;
   padding-right: 2px;
 }

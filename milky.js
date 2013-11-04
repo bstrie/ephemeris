@@ -11,7 +11,7 @@ function draw_galaxy() {
     var galactic_ecliptic = CANVAS_WIDTH/2;
 
     // If we just draw all the bands in a single step, the browser becomes unresponsive.
-    // So we split up each band into several parts, and place them in an array.
+    // So we split up each band into several parts, and place the parts in an array.
     // We then draw each part of each band with periodic pauses in-between.
     background = {density: CANVAS_HEIGHT * 10,
                   star_radius: {min: 0.5, max: 0.8},
@@ -50,10 +50,10 @@ function draw_galaxy() {
 
     function draw_all_bands() {
         if (bands.length > 0) {
-            var band = bands.shift();
+            var draw_next_band = bands.shift();
             // Draw a band...
-            band();
-            // ...then schedule the next band to be drawn
+            draw_next_band();
+            // ...then schedule another band to be drawn in a little bit
             setTimeout(draw_all_bands, 100);
         }
         else {
@@ -95,6 +95,6 @@ function rand_normal(stdev, mean) {
     return sum * stdev + mean;
 }
 
-function rand_linear(lower, upper) {
-    return lower + (upper - lower) * Math.random();
+function rand_linear(lower_bound, upper_bound) {
+    return (upper_bound - lower_bound) * Math.random() + lower_bound;
 }
