@@ -1,3 +1,15 @@
+// Retrieves the transition duration of an element, in milliseconds
+function transition_duration(element_id) {
+    var element = document.getElementById(element_id);
+    var element_style = window.getComputedStyle(element);
+    // Here's hoping that this value's name is consistent across browsers
+    var duration_string = element_style.getPropertyValue('transition-duration');
+    // A duration string is of the form "0.5s"
+    // Here's hoping that form is consistent across browsers
+    var duration_ms = 1000 * parseFloat(duration_string.replace(/s$/, ''));
+    return duration_ms;
+}
+
 // Configuration options for the progress spinner
 var opts = {
     lines: 13, // The number of lines to draw
@@ -46,6 +58,9 @@ ajax.onreadystatechange = function() {
         document.getElementById('positions').innerHTML = table_html;
         document.getElementById('info').innerHTML = info;
 
+        var spinner_fadeout_duration = transition_duration('spinner');
+        var content_fadein_duration = transition_duration('content');
+
         // Trigger the CSS transition to hide the spinner...
         document.getElementById('spinner').className = 'hidden';
         // ...then stop the spinner once it's done
@@ -55,9 +70,9 @@ ajax.onreadystatechange = function() {
             document.getElementById('content').className = '';
             // ...then start drawing the galaxy once it's done
             setTimeout(function() {
-              draw_galaxy();
-            }, 500);
-        }, 500);
+              milky.draw_galaxy();
+            }, content_fadein_duration);
+        }, spinner_fadeout_duration);
     }
 };
 
