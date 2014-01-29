@@ -30,7 +30,7 @@ def positions():
         planet_today['has_changed_since_yesterday'] = True
         if planet_today['sign'] == planet_yesterday['sign'] \
            and planet_today['degrees'] == planet_yesterday['degrees']:
-           planet_today['has_changed_since_yesterday'] = False
+            planet_today['has_changed_since_yesterday'] = False
 
     return flask.jsonify(today=today_data)
 
