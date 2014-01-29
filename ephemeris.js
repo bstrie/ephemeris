@@ -1,3 +1,5 @@
+"use strict";
+
 // Retrieves the transition duration of an element, in milliseconds
 function transition_duration(element_id) {
     var element = document.getElementById(element_id);
@@ -76,7 +78,7 @@ ajax.onreadystatechange = function() {
     }
 };
 
-onload = function() {
+window.onload = function() {
     spinner.spin(document.getElementById('spinner'));
 
     ajax.open('GET', 'ajax/positions?date=' + tonight_utc.toISOString(), true);

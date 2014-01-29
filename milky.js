@@ -1,3 +1,5 @@
+"use strict";
+
 var milky = function() {
     var CANVAS_WIDTH = window.innerWidth;
     var CANVAS_HEIGHT = window.innerHeight;
@@ -14,27 +16,27 @@ var milky = function() {
         // If we just draw all the bands in a single step, the browser becomes unresponsive.
         // So we split up each band into several parts, and place the parts in an array.
         // We then draw each part of each band with periodic pauses in-between.
-        background = {density: CANVAS_HEIGHT * 10,
-                      star_radius: {min: 0.5, max: 0.8},
-                      star_color: "rgba(255, 255, 255, 0.05)",
-                      band_width: {mean: galactic_ecliptic, stdev: CANVAS_WIDTH/10}};
+        var background = {density: CANVAS_HEIGHT * 10,
+                          star_radius: {min: 0.5, max: 0.8},
+                          star_color: "rgba(255, 255, 255, 0.05)",
+                          band_width: {mean: galactic_ecliptic, stdev: CANVAS_WIDTH/10}};
 
-        background_highlight = {density: CANVAS_HEIGHT * 8,
-                      star_radius: {min: 0.5, max: 0.8},
-                      star_color: "rgba(255, 255, 255, 0.075)",
-                      band_width: {mean: galactic_ecliptic, stdev: CANVAS_WIDTH/25}};
+        var background_highlight = {density: CANVAS_HEIGHT * 8,
+                          star_radius: {min: 0.5, max: 0.8},
+                          star_color: "rgba(255, 255, 255, 0.075)",
+                          band_width: {mean: galactic_ecliptic, stdev: CANVAS_WIDTH/25}};
 
-        foreground = {density: CANVAS_HEIGHT * 10,
-                      star_radius: {min: 0.1, max: 1.1},
-                      star_color: "rgba(255, 255, 255, 0.15)",
-                      band_width: {mean: galactic_ecliptic, stdev: CANVAS_WIDTH/6}};
+        var foreground = {density: CANVAS_HEIGHT * 10,
+                          star_radius: {min: 0.1, max: 1.1},
+                          star_color: "rgba(255, 255, 255, 0.15)",
+                          band_width: {mean: galactic_ecliptic, stdev: CANVAS_WIDTH/6}};
 
-        foreground_highlight = {density: CANVAS_HEIGHT / 3,
-                      star_radius: {min: 0.9, max: 1.5},
-                      star_color: "rgba(255, 255, 255, 0.35)",
-                      band_width: {mean: galactic_ecliptic, stdev: CANVAS_WIDTH/4}};
+        var foreground_highlight = {density: CANVAS_HEIGHT / 3,
+                          star_radius: {min: 0.9, max: 1.5},
+                          star_color: "rgba(255, 255, 255, 0.35)",
+                          band_width: {mean: galactic_ecliptic, stdev: CANVAS_WIDTH/4}};
 
-        bands = [];
+        var bands = [];
 
         function add_bands(band, how_many) {
             for (var i=0; i<how_many; i++) {
